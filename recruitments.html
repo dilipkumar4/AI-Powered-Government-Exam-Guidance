@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}Recruitments - Puducherry Recruitment Portal{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Government Recruitments</h2>
+
+<form method="GET" class="row g-2 mb-4">
+    <div class="col-md-6">
+        <input type="text" name="search" class="form-control" placeholder="Search by title..." value="{{ request.args.get('search', '') }}">
+    </div>
+    <div class="col-md-4">
+        <select name="department" class="form-select">
+            <option value="">All Departments</option>
+            {% for d in departments %}
+            <option value="{{ d }}" {% if d == request.args.get('department') %}selected{% endif %}>{{ d }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-md-2">
+        <button class="btn btn-primary w-100" type="submit">Search</button>
+    </div>
+</form>
+
+<div class="row">
+    {% for r in recruitments %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">{{ r.title }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{ r.department }}</h6>
+                <p class="card-text">
+                    <strong>Post:</strong> {{ r.post_name }}<br>
+                    <strong>Qualification:</strong> {{ r.qualification }}<br>
+                    <strong>Age Limit:</strong> {{ r.min_age }} - {{ r.max_age }} years<br>
+                    <strong>Vacancies:</strong> {{ r.vacancies }}
+                </p>
+                <p class="text-muted small mb-2">Apply by: {{ r.application_end }}</p>
+                <a href="{{ url_for('recruitment.recruitment_detail', recruitment_id=r.id) }}" class="btn btn-primary btn-sm">View Details</a>
+                <a href="{{ r.official_link }}" target="_blank" class="btn btn-outline-primary btn-sm">Apply Online</a>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="col-12">
+        <p class="text-muted">No recruitments found matching your search.</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

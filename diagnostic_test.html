@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% block title %}Diagnostic Assessment{% endblock %}
+
+{% block content %}
+<h3 class="mb-1">Diagnostic Assessment</h3>
+<p class="text-muted mb-4">
+    A short mixed test across General Knowledge, Mathematics, Reasoning and English to
+    determine your starting preparation level.
+</p>
+
+{% if result %}
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <h4 class="mb-3">Your Result</h4>
+      <p class="mb-1"><strong>Score:</strong> {{ result.score }} / {{ result.total }} ({{ result.percentage }}%)</p>
+      <p class="mb-3">
+        <strong>Preparation Level:</strong>
+        {% if result.preparation_level == 'Advanced' %}
+          <span class="badge bg-success">{{ result.preparation_level }}</span>
+        {% elif result.preparation_level == 'Intermediate' %}
+          <span class="badge bg-warning text-dark">{{ result.preparation_level }}</span>
+        {% else %}
+          <span class="badge bg-danger">{{ result.preparation_level }}</span>
+        {% endif %}
+      </p>
+
+      <h6 class="text-uppercase text-muted small">Subject-wise Breakdown</h6>
+      <ul class="list-group">
+        {% for subject, stats in result.subject_stats.items() %}
+          <li class="list-group-item d-flex justify-content-between">
+            {{ subject }}
+            <span>{{ stats[0] }} / {{ stats[1] }} correct</span>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <a href="{{ url_for('dashboard') }}" class="btn btn-primary">Back to Dashboard</a>
+
+{% else %}
+  <form method="POST" action="{{ url_for('diagnostic_test') }}">
+    {% for q in questions %}
+      <div class="card shadow-sm mb-3">
+        <div class="card-body">
+          <span class="badge bg-light text-muted border mb-2">{{ q.subject }}</span>
+          <h6 class="mb-3">{{ loop.index }}. {{ q.question_text }}</h6>
+
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="question_{{ q.question_id }}" value="A" id="q{{ q.question_id }}a" required>
+            <label class="form-check-label" for="q{{ q.question_id }}a">{{ q.option_a }}</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="question_{{ q.question_id }}" value="B" id="q{{ q.question_id }}b">
+            <label class="form-check-label" for="q{{ q.question_id }}b">{{ q.option_b }}</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="question_{{ q.question_id }}" value="C" id="q{{ q.question_id }}c">
+            <label class="form-check-label" for="q{{ q.question_id }}c">{{ q.option_c }}</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="question_{{ q.question_id }}" value="D" id="q{{ q.question_id }}d">
+            <label class="form-check-label" for="q{{ q.question_id }}d">{{ q.option_d }}</label>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+
+    <button type="submit" class="btn btn-primary btn-lg">Submit Test</button>
+  </form>
+{% endif %}
+{% endblock %}

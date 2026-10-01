@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Weakness Analysis{% endblock %}
+
+{% block content %}
+<h2 class="mb-3">Your Weakness Analysis</h2>
+<p class="text-muted">
+    Based on your latest diagnostic test — Score: {{ result.score }}/{{ result.total_questions }}
+    ({{ result.percentage }}%), Level: {{ result.preparation_level }}
+</p>
+
+{% if weak_subjects %}
+<div class="alert alert-warning">
+    <strong>Focus areas:</strong>
+    {{ weak_subjects | map(attribute='subject') | join(', ') }}
+</div>
+{% endif %}
+
+<div class="table-responsive">
+    <table class="table table-bordered table-striped align-middle">
+        <thead class="table-primary">
+            <tr>
+                <th>Subject</th>
+                <th>Correct</th>
+                <th>Total</th>
+                <th>Accuracy</th>
+                <th>Level</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in analysis_rows %}
+            <tr>
+                <td>{{ row.subject }}</td>
+                <td>{{ row.correct }}</td>
+                <td>{{ row.total }}</td>
+                <td>{{ row.accuracy }}%</td>
+                <td>
+                    {% if row.weakness_level == 'Weak' %}
+                        <span class="badge bg-danger">Weak</span>
+                    {% elif row.weakness_level == 'Moderate' %}
+                        <span class="badge bg-warning text-dark">Moderate</span>
+                    {% else %}
+                        <span class="badge bg-success">Strong</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="5" class="text-center text-muted">No subject data available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<a href="{{ url_for('diagnostic_test') }}" class="btn btn-primary mt-3">Retake Diagnostic Test</a>
+<a href="{{ url_for('study_planner_bp.study_planner') }}" class="btn btn-success mt-3">Generate My Study Plan</a>
+{% endblock %}

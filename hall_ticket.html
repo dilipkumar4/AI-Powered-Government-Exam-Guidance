@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Hall Ticket{% endblock %}
+{% block content %}
+<h2 class="mb-3">Hall Ticket &ndash; {{ recruitment.title }}</h2>
+
+{% if hall_ticket and hall_ticket.is_released %}
+<div class="alert alert-success">
+    Your hall ticket was released on {{ hall_ticket.released_at }}.
+</div>
+<a href="{{ hall_ticket.hall_ticket_link }}" target="_blank" class="btn btn-success">
+    Download Hall Ticket
+</a>
+{% else %}
+<div class="alert alert-info">
+    The hall ticket for this recruitment hasn't been released yet.
+    If you registered for alerts, we'll email you the moment it's available.
+</div>
+<form method="POST" action="{{ url_for('hall_ticket_bp.register_for_alert', recruitment_id=recruitment.id) }}">
+    <button type="submit" class="btn btn-primary">Notify Me When Released</button>
+</form>
+{% endif %}
+{% endblock %}

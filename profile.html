@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% block title %}Student Profile - Puducherry Recruitment Portal{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm mx-auto" style="max-width: 650px;">
+    <div class="card-body">
+        <h3 class="card-title mb-4">Student Profile</h3>
+
+        <form method="POST" action="{{ url_for('profile_bp.save_profile') }}">
+
+            <div class="mb-3">
+                <label class="form-label">Age</label>
+                <input type="number" name="age" class="form-control"
+                       value="{{ profile.age if profile else '' }}" min="15" max="65" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Qualification</label>
+                <select name="qualification" class="form-select" required>
+                    <option value="">-- Select --</option>
+                    <option {% if profile and profile.qualification=='10th' %}selected{% endif %}>10th</option>
+                    <option {% if profile and profile.qualification=='12th' %}selected{% endif %}>12th</option>
+                    <option {% if profile and profile.qualification=='Diploma' %}selected{% endif %}>Diploma</option>
+                    <option {% if profile and profile.qualification=='UG' %}selected{% endif %}>UG</option>
+                    <option {% if profile and profile.qualification=='PG' %}selected{% endif %}>PG</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Skills</label>
+                <input type="text" name="skills" class="form-control"
+                       placeholder="e.g. Computer Basics, Typing, Communication"
+                       value="{{ profile.skills if profile else '' }}">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Preferred Department</label>
+                <select name="preferred_department" class="form-select">
+                    <option value="">-- Select --</option>
+                    <option>Revenue & Disaster Management</option>
+                    <option>Police & Home</option>
+                    <option>School Education</option>
+                    <option>Health & Family Welfare</option>
+                    <option>Public Works & Engineering</option>
+                    <option>Electricity Department</option>
+                    <option>Administration & Secretariat</option>
+                    <option>Agriculture</option>
+                    <option>Fisheries</option>
+                    <option>Local Administration</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Preferred Job Type</label>
+                <select name="preferred_job_type" class="form-select">
+                    <option value="">-- Select --</option>
+                    <option>Technical</option>
+                    <option>Non-Technical</option>
+                    <option>Clerical</option>
+                    <option>Field Work</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Available Study Hours (per day)</label>
+                <input type="number" step="0.5" name="available_study_hours" class="form-control"
+                       value="{{ profile.available_study_hours if profile else '' }}" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Target Recruitment</label>
+                <input type="text" name="target_recruitment" class="form-control"
+                       placeholder="e.g. Village Administrative Officer (VAO)"
+                       value="{{ profile.target_recruitment if profile else '' }}">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Preparation Level</label>
+                <select name="preparation_level" class="form-select">
+                    <option {% if profile and profile.preparation_level=='Beginner' %}selected{% endif %}>Beginner</option>
+                    <option {% if profile and profile.preparation_level=='Intermediate' %}selected{% endif %}>Intermediate</option>
+                    <option {% if profile and profile.preparation_level=='Advanced' %}selected{% endif %}>Advanced</option>
+                </select>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label">Preferred Language</label>
+                <select name="preferred_language" class="form-select">
+                    <option {% if profile and profile.preferred_language=='English' %}selected{% endif %}>English</option>
+                    <option {% if profile and profile.preferred_language=='Tamil' %}selected{% endif %}>Tamil</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Save Profile</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

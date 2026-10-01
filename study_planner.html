@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Study Planner{% endblock %}
+
+{% block content %}
+<h2 class="mb-3">AI Personalized Study Planner</h2>
+<p class="text-muted">
+    The AI generates a study schedule according to target recruitment, available study
+    hours, weak topics, and your current preparation level and performance.
+</p>
+
+<ul class="list-unstyled mb-4">
+    {% if target_recruitment %}
+    <li><strong>Target recruitment:</strong> {{ target_recruitment }}</li>
+    {% endif %}
+    <li><strong>Available study time:</strong> {{ available_hours }} hours/day</li>
+    <li><strong>Preparation level:</strong> {{ preparation_level }}</li>
+    {% if latest_result %}
+    <li><strong>Latest diagnostic score:</strong> {{ latest_result.score }}/{{ latest_result.total_questions }}
+        ({{ latest_result.percentage }}%)</li>
+    {% endif %}
+</ul>
+
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead class="table-primary">
+            <tr>
+                <th>Duration</th>
+                <th>Activity</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for block in schedule %}
+            <tr>
+                <td>{{ block.duration_minutes }} minutes</td>
+                <td>{{ block.activity }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="2" class="text-center text-muted">No schedule available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<a href="{{ url_for('weakness_bp.weakness_analysis') }}" class="btn btn-outline-primary mt-2">
+    Back to Weakness Analysis
+</a>
+{% endblock %}

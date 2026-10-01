@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Recommended Recruitments - Puducherry Recruitment Portal{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Recommended For You</h2>
+
+<form method="GET" class="row g-2 mb-4">
+    <div class="col-md-5">
+        <input type="text" name="qualification" class="form-control" placeholder="Your qualification (e.g. B.E, 12th Pass)" value="{{ request.args.get('qualification', '') }}">
+    </div>
+    <div class="col-md-3">
+        <input type="number" name="age" class="form-control" placeholder="Your age" value="{{ request.args.get('age', '') }}">
+    </div>
+    <div class="col-md-4">
+        <button class="btn btn-primary w-100" type="submit">Find Matches</button>
+    </div>
+</form>
+
+<div class="row">
+    {% for r in matches %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm border-success">
+            <div class="card-body">
+                <h5 class="card-title">{{ r.title }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{ r.department }}</h6>
+                <p class="card-text">
+                    <strong>Post:</strong> {{ r.post_name }}<br>
+                    <strong>Qualification:</strong> {{ r.qualification }}<br>
+                    <strong>Age Limit:</strong> {{ r.min_age }} - {{ r.max_age }} years<br>
+                    <strong>Vacancies:</strong> {{ r.vacancies }}
+                </p>
+                <p class="text-muted small mb-2">Apply by: {{ r.application_end }}</p>
+                <a href="{{ r.official_link }}" target="_blank" class="btn btn-outline-success btn-sm">View Details</a>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="col-12">
+        <p class="text-muted">Enter your qualification and age above to see matching recruitments.</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

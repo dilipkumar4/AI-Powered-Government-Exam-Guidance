@@ -1,0 +1,7 @@
+Flask==3.0.3
+mysql-connector-python==8.4.0
+Werkzeug==3.0.3
+numpy
+scikit-learn
+scipy
+Flask-Mail

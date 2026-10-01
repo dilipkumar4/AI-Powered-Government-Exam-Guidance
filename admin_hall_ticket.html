@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Admin - Hall Ticket{% endblock %}
+{% block content %}
+<h2 class="mb-3">Admin: Hall Ticket Control &ndash; {{ recruitment.title }}</h2>
+<p class="text-muted">
+    {{ registration_count }} candidate(s) registered for alerts on this recruitment.
+</p>
+
+{% if hall_ticket and hall_ticket.is_released %}
+<div class="alert alert-success">
+    Already marked released on {{ hall_ticket.released_at }}.<br>
+    Link: {{ hall_ticket.hall_ticket_link }}
+</div>
+{% else %}
+<div class="alert alert-warning">Not yet released.</div>
+{% endif %}
+
+<form method="POST" class="mt-3">
+    <div class="mb-3">
+        <label class="form-label">Hall Ticket Link (this simulates "Official Source Monitoring" confirming release)</label>
+        <input type="url" name="hall_ticket_link" class="form-control" placeholder="https://..." required>
+    </div>
+    <button type="submit" class="btn btn-success">Mark Released &amp; Notify Candidates</button>
+</form>
+{% endblock %}

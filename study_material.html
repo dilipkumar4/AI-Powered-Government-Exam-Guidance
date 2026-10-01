@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}Study Material{% endblock %}
+
+{% block content %}
+{% if recruitment %}
+  <h3 class="mb-1">Study Material</h3>
+  <h6 class="text-muted mb-4">{{ recruitment.title }} &middot; {{ recruitment.department }}</h6>
+
+  {% if materials %}
+    {% for material_type, items in materials|groupby('material_type') %}
+      <h5 class="mt-4 mb-3">{{ material_type }}</h5>
+      <div class="row">
+        {% for m in items %}
+          <div class="col-md-6 mb-3">
+            <div class="card h-100 shadow-sm">
+              <div class="card-body">
+                <h6 class="card-title">{{ m.title }}</h6>
+                <p class="card-text text-muted small">{{ m.description or '' }}</p>
+                {% if m.file_link and m.file_link != '#' %}
+                  <a href="{{ m.file_link }}" target="_blank" class="btn btn-sm btn-outline-primary">Open / Download</a>
+                {% else %}
+                  <span class="badge bg-light text-muted border">Coming soon</span>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% endfor %}
+  {% else %}
+    <p class="text-muted mt-3">Study material for this recruitment hasn't been added yet.</p>
+  {% endif %}
+
+  <a href="{{ url_for('recruitment.recruitment_detail', recruitment_id=recruitment.id) }}" class="btn btn-link mt-3">&larr; Back to recruitment details</a>
+
+{% else %}
+  <div class="alert alert-warning">Recruitment not found.</div>
+  <a href="{{ url_for('recruitment.list_recruitments') }}" class="btn btn-primary">Back to all recruitments</a>
+{% endif %}
+{% endblock %}

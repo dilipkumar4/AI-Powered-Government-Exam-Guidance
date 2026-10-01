@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h2>Welcome, {{ name }} 👋</h2>
+<p class="text-muted">This is your dashboard. Modules 2 onward (Profile, Recruitment Search, etc.) will build on this.</p>
+
+<div class="d-flex gap-2 mt-3">
+    <a href="{{ url_for('diagnostic_test') }}" class="btn btn-primary">Take Diagnostic Assessment</a>
+    <a href="{{ url_for('recruitment.list_recruitments') }}" class="btn btn-outline-primary">Browse Recruitments</a>
+    <a href="{{ url_for('profile_bp.view_profile') }}" class="btn btn-outline-secondary">My Profile</a>
+    <a href="{{ url_for('weakness_bp.weakness_analysis') }}" class="btn btn-primary">Weakness Analysis</a>
+    <a href="{{ url_for('study_planner_bp.study_planner') }}" class="btn btn-success">My Study Planner</a>
+</div>
+{% endblock %}
